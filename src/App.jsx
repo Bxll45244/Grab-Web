@@ -1,17 +1,14 @@
-// import { useState } from "react";
-import "./App.css";
-import Restaurant from "./components/Restaurant";
-import Search from "./components/Search";
+import React from "react";
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
-// import Card from "./components/Card";
-// import Card2 from "./components/Card2";
+import Home from "./pages/Home";
 
-function App() {
-  
-
-
-
-}
+const App = () => {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <Home />
+    </div>
+  );
+};
 
 export default App;

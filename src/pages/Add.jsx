@@ -1,94 +1,92 @@
-import React from 'react'
+// src/pages/Add.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-    const Add = () => {
-const [restaurant, setRestaurant] = useState({
-  title:"",
-  type:"",
-  img:""
-})
-const handleChange = (e) =>{
-  const {name, value} = e.target;
-  setRestaurant({...restaurant,[name]:value})
-}
-const handSubmit = async ()=>{
-  try{
-    const reponse = await fetch("http://localhost:3000/restaurants",{
-  method: "POST",
-  body: JSON.stringify(restaurant),
+const Add = () => {
+  const navigate = useNavigate();
+  const [restaurant, setRestaurant] = useState({
+    name: "",
+    type: "",
+    img: "",
   });
-  if(reponse.ok){
-    alert("Restaurant added successfully!!!");
-    setRestaurant({
-      title:"",
-      type:"",
-      img:"",
-    });
-  }
-}catch (error) {
-  console.log (error);
-  }
-}
-return (
-  <div className="container mx-auto">
-    <h2 className="text-2xl font-bold mb-4">Add New Restaurant</h2>
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Title
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={restaurant.title}
-          onChange={handleChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="type" className="block text-sm font-medium text-gray-700">
-          Type
-        </label>
-        <input
-          type="text"
-          id="type"
-          name="type"
-          value={restaurant.type}
-          onChange={handleChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="img" className="block text-sm font-medium text-gray-700">
-          Image URL
-        </label>
-        <input
-          type="text"
-          id="img"
-          name="img"
-          value={restaurant.img}
-          onChange={handleChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          required
-        />
-      </div>
-      <div>
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRestaurant({ ...restaurant, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3000/restaurants", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(restaurant),
+      });
+
+      if (response.ok) {
+        navigate("/"); // นำทางกลับไปที่หน้า Home หลังจากเพิ่มร้านอาหาร
+      } else {
+        console.log("Error adding restaurant.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-4">Add Restaurant</h1>
+      <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Name</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Restaurant Name"
+            name="name"
+            onChange={handleChange}
+            value={restaurant.name}
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Type</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Restaurant Type"
+            name="type"
+            onChange={handleChange}
+            value={restaurant.type}
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Image URL</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Restaurant Image URL"
+            name="img"
+            onChange={handleChange}
+            value={restaurant.img}
+          />
+        </div>
+        {restaurant.img && (
+          <div className="flex items-center gap-2">
+            <img src={restaurant.img} className="h-32" alt="Restaurant" />
+          </div>
+        )}
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
         >
           Add Restaurant
         </button>
-      </div>
-    </form>
-  </div>
-);
-}
+      </form>
+    </div>
+  );
+};
 
-
-
-export default Add
-  
-
+export default Add;

@@ -1,37 +1,29 @@
 import React, { useState } from 'react';
 
-const SearchForm = () => {
-  const [search, setSearch] = useState('');
+const Search = ({ handleSearch }) => {
+  const [term, setTerm] = useState("");
 
-  const handleChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Search:', search);
+  const onSearch = () => {
+    handleSearch(term);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center">
-      <label htmlFor="search-input" className="sr-only">Search for restaurants</label>
+    <div className="flex items-center space-x-4 p-4 bg-white shadow-md rounded-lg">
       <input
         type="text"
-        id="search-input"
-        name="search"
         placeholder="Search for restaurants..."
-        className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 "
-        value={search}
-        onChange={handleChange}
+        value={term}
+        onChange={(e) => setTerm(e.target.value)}
+        className="border border-gray-300 rounded-lg p-2 w-full"
       />
       <button
-        type="submit"
-        className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+        onClick={onSearch}
+        className="bg-black text-white px-4 py-2 rounded-lg" // เปลี่ยนเป็นสีดำ
       >
         Search
       </button>
-    </form>
+    </div>
   );
 };
 
-export default SearchForm;
+export default Search;

@@ -19,12 +19,12 @@ const Home = () => {
 
   const handleSearch = (term) => {
     setSearchTerm(term);
-    // กรองรายการร้านอาหารตามคำค้นหา
     const filtered = restaurants.filter((restaurant) =>
       restaurant.name.toLowerCase().includes(term.toLowerCase())
     );
     setFilteredRestaurants(filtered);
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50">

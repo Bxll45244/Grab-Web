@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // นำเข้า useNavigate เพื่อใช้สำหรับการนำทาง
 
 const Edit = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // ดึง id จาก URL
+  const navigate = useNavigate(); // สร้างตัวแปร navigate สำหรับการนำทาง
   const [restaurant, setRestaurant] = useState({
     name: "",
     type: "",
     img: "",
   });
 
+  // ดึงข้อมูลร้านอาหารตาม id จาก URL
   useEffect(() => {
     fetch("http://localhost:3000/restaurants/" + id)
       .then((res) => res.json())
@@ -16,11 +18,13 @@ const Edit = () => {
       .catch((err) => console.log(err.message));
   }, [id]);
 
+  // ฟังก์ชันจัดการการเปลี่ยนแปลงข้อมูลในฟอร์ม
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRestaurant({ ...restaurant, [name]: value });
   };
 
+  // ฟังก์ชันจัดการเมื่อส่งฟอร์ม
   const handleSubmit = async () => {
     try {
       const response = await fetch(`http://localhost:3000/restaurants/${id}`, {
@@ -32,9 +36,10 @@ const Edit = () => {
       });
 
       if (response.ok) {
-        // Handle success, e.g., navigate to another page or show a success message
+        navigate("/"); // นำทางกลับไปที่หน้าหลักหลังจากแก้ไขสำเร็จ
       } else {
-        // Handle error, e.g., show an error message
+        // จัดการข้อผิดพลาดถ้าเกิดขึ้น
+        console.log("Error updating restaurant.");
       }
     } catch (error) {
       console.log(error);
@@ -42,51 +47,52 @@ const Edit = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <div>
-        <h1 className="text-2xl text-center">Edit Restaurant</h1>
-      </div>
-      <div className="space-y-2">
-        <label className="input input-bordered flex items-center gap-2">
-          Restaurant Name
-        </label>
-        <input
-          type="text"
-          className="grow"
-          placeholder="Restaurant Name"
-          name="name"
-          onChange={handleChange}
-          value={restaurant.name}
-        />
-        <label className="input input-bordered flex items-center gap-2">
-          Restaurant Type
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold text-center mb-4">Edit Restaurant</h1>
+      <div className="space-y-4 max-w-lg mx-auto">
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Name</label>
           <input
             type="text"
-            className="grow"
+            className="w-full border border-gray-300 rounded px-3 py-2"
+            placeholder="Restaurant Name"
+            name="name"
+            onChange={handleChange}
+            value={restaurant.name}
+          />
+        </div>
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Type</label>
+          <input
+            type="text"
+            className="w-full border border-gray-300 rounded px-3 py-2"
             placeholder="Restaurant Type"
             name="type"
             onChange={handleChange}
             value={restaurant.type}
           />
-        </label>
-        <label className="input input-bordered flex items-center gap-2">
-          Restaurant Image URL
+        </div>
+        <div>
+          <label className="block mb-1 text-gray-700">Restaurant Image URL</label>
           <input
             type="text"
-            className="grow"
+            className="w-full border border-gray-300 rounded px-3 py-2"
             placeholder="Restaurant Image URL"
             name="img"
             onChange={handleChange}
             value={restaurant.img}
           />
-        </label>
+        </div>
         {restaurant.img && (
           <div className="flex items-center gap-2">
             <img src={restaurant.img} className="h-32" alt="Restaurant" />
           </div>
         )}
-        <button className="btn btn-success" onClick={handleSubmit}>
-          Edit Restaurant
+        <button
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          onClick={handleSubmit}
+        >
+          Update Restaurant
         </button>
       </div>
     </div>

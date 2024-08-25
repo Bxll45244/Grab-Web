@@ -1,14 +1,15 @@
-import {createBrowserRouter} from "react-router-dom";
-import Add from "../pages/Add.jsx";
-import Home from "../pages/Home.jsx";
+import { createBrowserRouter } from 'react-router-dom';
+import Home from '../pages/Home';
+import Edit from '../pages/Edit';
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Home />, // แสดงหน้า Home เมื่อ URL เป็น "/"
   },
   {
-    path: "/add",
-    element: <Add />,
+    path: "/edit/:id",
+    element: <Edit />, // แสดงหน้า Edit เมื่อ URL เป็น "/edit/:id"
   },
 ]);
 

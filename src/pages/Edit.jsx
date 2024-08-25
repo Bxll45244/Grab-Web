@@ -7,12 +7,12 @@ const Edit = () => {
   const [restaurant, setRestaurant] = useState({
     name: "",
     type: "",
-    image: "",
+    img: "",
   });
 
   // ดึงข้อมูลร้านอาหารตาม id จาก URL
   useEffect(() => {
-    fetch("http://localhost:5173/restaurants/" + id)
+    fetch("http://localhost:3000/restaurants/" + id)
       .then((res) => res.json())
       .then((response) => setRestaurant(response))
       .catch((err) => console.log(err.message));

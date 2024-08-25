@@ -1,86 +1,72 @@
-// src/pages/Add.jsx
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Add = () => {
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
-  const [restaurant, setRestaurant] = useState({
-    name: "",
-    type: "",
-    img: "",
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRestaurant({ ...restaurant, [name]: value });
-  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const newRestaurant = {
+      id: Date.now().toString(), // หรือใช้วิธีอื่นในการสร้าง ID
+      name,
+      image,
+      description,
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:3000/restaurants", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(restaurant),
-      });
-
-      if (response.ok) {
-        navigate("/"); // นำทางกลับไปที่หน้า Home หลังจากเพิ่มร้านอาหาร
-      } else {
-        console.log("Error adding restaurant.");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    fetch('/db.json', { // ใช้ endpoint ที่แท้จริงของ API ของคุณ
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newRestaurant),
+    })
+      .then(response => response.json())
+      .then(() => {
+        navigate('/');
+      })
+      .catch(error => console.error('Error:', error));
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">Add Restaurant</h1>
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
-        <div>
-          <label className="block mb-1 text-gray-700">Restaurant Name</label>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">Add New Restaurant</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="Restaurant Name"
-            name="name"
-            onChange={handleChange}
-            value={restaurant.name}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            required
           />
         </div>
-        <div>
-          <label className="block mb-1 text-gray-700">Restaurant Type</label>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Image URL</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="Restaurant Type"
-            name="type"
-            onChange={handleChange}
-            value={restaurant.type}
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            required
           />
         </div>
-        <div>
-          <label className="block mb-1 text-gray-700">Restaurant Image URL</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="Restaurant Image URL"
-            name="img"
-            onChange={handleChange}
-            value={restaurant.img}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            required
           />
         </div>
-        {restaurant.img && (
-          <div className="flex items-center gap-2">
-            <img src={restaurant.img} className="h-32" alt="Restaurant" />
-          </div>
-        )}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           Add Restaurant
         </button>

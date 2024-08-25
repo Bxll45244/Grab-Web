@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // นำเข้า Link จาก react-router-dom
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Restaurants from "../components/Restaurants";
@@ -31,7 +31,6 @@ const Home = () => {
       <Header />
       <Search handleSearch={handleSearch} />
       
-      {/* Add Register and Login buttons */}
       <div className="fixed top-4 right-4 space-x-2">
         <Link to="/register">
           <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">

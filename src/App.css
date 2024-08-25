@@ -1,5 +1,29 @@
-card-body{
+.card-body {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-gap: 2rem;
-}
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem;
+  }
+  
+  .card p {
+    font-size: 0.875rem;
+    margin: 0.5rem;
+  }
+  
